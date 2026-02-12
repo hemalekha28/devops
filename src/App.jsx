@@ -9,7 +9,17 @@ import Footer from './components/Footer';
 
 function App() {
   return (
-    <div className="min-h-screen bg-slate-950 font-sans selection:bg-brand-blue/30 selection:text-brand-blue">
+    <div className="min-h-screen font-sans"
+      style={{
+        backgroundColor: 'var(--bg-primary)',
+        color: 'var(--text-primary)'
+      }}>
+      <style>{`
+        ::selection {
+          background: linear-gradient(to right, #a855f7, #06b6d4);
+          color: white;
+        }
+      `}</style>
       <Navbar />
       <main>
         <Hero />

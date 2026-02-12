@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Sun, Moon } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 const Navbar = () => {
+    const { theme, toggleTheme } = useTheme();
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -21,8 +23,10 @@ const Navbar = () => {
     ];
 
     return (
-        <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-slate-900/80 backdrop-blur-md py-4 shadow-lg' : 'bg-transparent py-6'
-            }`}>
+        <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'backdrop-blur-md py-4 shadow-lg' : 'bg-transparent py-6'
+            }`}
+            style={isScrolled ? { backgroundColor: 'var(--bg-secondary)' } : {}}
+        >
             <div className="container mx-auto px-6 flex justify-between items-center">
                 <div className="flex items-center space-x-2">
                     <div className="font-extrabold text-2xl tracking-tighter flex items-center gap-3">
@@ -44,11 +48,25 @@ const Navbar = () => {
                         <a
                             key={link.name}
                             href={link.href}
-                            className="text-gray-300 hover:text-white transition-colors font-medium"
+                            className="transition-colors font-medium"
+                            style={{ color: 'var(--text-secondary)' }}
+                            onMouseEnter={(e) => e.target.style.color = 'var(--text-primary)'}
+                            onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}
                         >
                             {link.name}
                         </a>
                     ))}
+                    <button
+                        onClick={toggleTheme}
+                        className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all"
+                        aria-label="Toggle theme"
+                    >
+                        {theme === 'dark' ? (
+                            <Sun size={20} className="text-yellow-400" />
+                        ) : (
+                            <Moon size={20} className="text-slate-700" />
+                        )}
+                    </button>
                     <button className="bg-brand-blue hover:bg-brand-blue/90 text-white px-6 py-2 rounded-full font-semibold transition-all transform hover:scale-105 active:scale-95">
                         Get Started
                     </button>
@@ -67,18 +85,37 @@ const Navbar = () => {
 
             {/* Mobile Menu */}
             {isMobileMenuOpen && (
-                <div className="md:hidden bg-slate-900 absolute top-full left-0 w-full p-6 shadow-2xl border-t border-white/10 animate-fade-in">
+                <div className="md:hidden absolute top-full left-0 w-full p-6 shadow-2xl animate-fade-in"
+                    style={{ backgroundColor: 'var(--bg-secondary)', borderTop: '1px solid var(--border-color)' }}
+                >
                     <div className="flex flex-col space-y-4">
                         {navLinks.map((link) => (
                             <a
                                 key={link.name}
                                 href={link.href}
-                                className="text-gray-300 hover:text-white text-lg font-medium"
+                                className="text-lg font-medium transition-colors"
+                                style={{ color: 'var(--text-secondary)' }}
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
                                 {link.name}
                             </a>
                         ))}
+                        <button
+                            onClick={toggleTheme}
+                            className="w-full flex items-center justify-center gap-2 py-3 bg-white/5 hover:bg-white/10 text-white rounded-xl font-semibold transition-all"
+                        >
+                            {theme === 'dark' ? (
+                                <>
+                                    <Sun size={20} className="text-yellow-400" />
+                                    <span>Light Mode</span>
+                                </>
+                            ) : (
+                                <>
+                                    <Moon size={20} className="text-slate-700" />
+                                    <span>Dark Mode</span>
+                                </>
+                            )}
+                        </button>
                         <button className="bg-brand-blue text-white px-6 py-3 rounded-xl font-semibold w-full">
                             Get Started
                         </button>
