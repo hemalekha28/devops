@@ -51,4 +51,4 @@ jobs:
             --name myapp \
             chandrulinesmasher/mysampleappv1:latest
           
-          echo "Deployment completed successfully!"`  
+          echo "Deployment completed successfully!"
